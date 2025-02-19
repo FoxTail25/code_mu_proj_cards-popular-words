@@ -1,0 +1,22 @@
+/* #filter_box {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: inherit;
+
+  @media screen and (min-width: 768px) {
+    max-width: 60%;
+  }
+
+  h2,
+  .all_entertaiment {
+    grid-column: 1/5;
+    text-align: center;
+    margin-bottom: 10px;
+
+    button {
+      min-width: 30%;
+    }
+  }
+} */
+
+main {padding: 50px}
