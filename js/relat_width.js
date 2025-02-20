@@ -2,11 +2,10 @@
 const cardBlock = document.querySelector('.card_block');
 window.addEventListener('resize', getWidth);
 
-function getWidth(){
-    // let width = window.innerWidth;
-    let width = window.document.children[0].clientWidth;
-    cardBlock.style.width = `${width}px`
-    console.log('clientwidth', window.document.children[0].clientWidth)
+function getWidth() {
+    const windowInnerWidth = document.documentElement.clientWidth;
+    + windowInnerWidth < 1024
+        ? cardBlock.style.width = windowInnerWidth + 'px'
+        : cardBlock.style.width = '1024px'
 }
-
 getWidth()
