@@ -37,7 +37,6 @@ function getCard(data) {
 }
 
 function iKnowFunc() {
-	
 	localStorageWork.setRecord(learnedWords)
 	console.log(wordsArr.indexOf(randomWord))
 	goOut()

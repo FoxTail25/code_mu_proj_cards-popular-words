@@ -7,6 +7,7 @@ main {
     width: 60vw;
     height: 50vh;
     overflow: hidden;
+    
 
     .word_cart {
       display: grid;
@@ -15,11 +16,14 @@ main {
       border: 1px solid gray;
       border-radius: 15px;
       position: absolute;
-      left: 0;
+      left: 50%;
+      transform: translate(-50%, 0);
 
       transition: left .5s ease;
 
       width: 300px;
+      padding-bottom: 20px;
+
       @media screen and (min-width: 768px) {
         width: 50vw;
         padding: 20px;
