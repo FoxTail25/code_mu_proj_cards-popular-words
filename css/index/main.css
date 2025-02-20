@@ -60,5 +60,20 @@ main {
       right: 0vw;
     }
   }
-  
+  #word_table {
+    width: 100%;
+    thead {
+      th {
+        /* text-align: left; */
+      }
+    }
+    tbody {
+      tr {
+        td {
+          width: 25%;
+          text-align: center;
+        }
+      }
+    }
+  }
 }
