@@ -4,6 +4,7 @@ import { getRandomInt } from './rnd_num.js';
 import { words } from './words.js';
 
 const cardBlock = document.querySelector('.card_block');
+document.getElementById('clearLearningWorldBtn').addEventListener('click', reserLearningWorld);
 
 
 let wordsArr = [...words];
@@ -14,14 +15,14 @@ let randomWord;
 if(learnedWordsFromLocal) {
 	learnedWords = [...learnedWordsFromLocal];
 	let engLearnedWords = learnedWords.map(e => e.eng);
-	console.log(engLearnedWords)
+	console.log('массив изученных слов', engLearnedWords);
 	wordsArr = wordsArr.filter(e => {
 		if (!engLearnedWords.includes(e.eng)) {
 			return e 
-		}
+		};
 		 
 	})
-	console.log(wordsArr.length)
+	console.log('длинна массива со словами для изучения', wordsArr.length)
 
 }
 
@@ -37,21 +38,32 @@ function getCard(data) {
 }
 
 function iKnowFunc() {
+	// console.log('длинна массива слов для изучения', wordsArr.length)
 	localStorageWork.setRecord(learnedWords)
-	console.log(wordsArr.indexOf(randomWord))
+	let indexxRandomWord = wordsArr.indexOf(randomWord);
+	wordsArr.splice(indexxRandomWord,1)
+	// console.log('длинна массива слов для изучения', wordsArr.length)
 	goOut()
 	getRndCard()
 }
-function iDontKnowFunc() {
-	learnedWords.pop()
-	let [, rus] = [...card.children];
-	rus.classList.remove('hide')
-	setTimeout(
-		() => {
-			goOut()
-			getRndCard()
-		}, 1000
-	)
+function iDontKnowFunc(reset) {
+	if(reset) {
+		learnedWords.pop()
+		goOut()
+		getRndCard()
+	} else {
+
+		learnedWords.pop()
+		let [, rus] = [...card.children];
+		rus.classList.remove('hide')
+		setTimeout(
+			() => {
+				goOut()
+				getRndCard()
+			}, 1000 // вреимя задержки смены карточки при показе перевода слова.
+		)
+	}
+
 }
 
 function goOut() {
@@ -64,8 +76,15 @@ function getRndCard() {
 	let max = wordsArr.length - 1;
 	let rndWordIndex = getRandomInt(min, max);
 	randomWord = wordsArr[rndWordIndex];
-	learnedWords.push(randomWord)
+	learnedWords.push(randomWord);
 	getCard(randomWord)
+}
+
+function reserLearningWorld(){
+	wordsArr = [...words];
+	learnedWords = [];
+	localStorageWork.setRecord(learnedWords);
+	iDontKnowFunc('reset')
 }
 
 getRndCard()
