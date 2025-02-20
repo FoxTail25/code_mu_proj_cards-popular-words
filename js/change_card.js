@@ -2,30 +2,34 @@ import { createCard } from './create_card.js';
 import { localStorageWork } from './local_stor.js';
 import { getRandomInt } from './rnd_num.js';
 import { words } from './words.js';
+import { tableBtn } from './wordTable.js';
 
 const cardBlock = document.querySelector('.card_block');
 document.getElementById('clearLearningWorldBtn').addEventListener('click', reserLearningWorld);
+
+const wordTable = document.getElementById("word_table");
+document.getElementById('wordTableBtn').addEventListener('click', () => tableBtn(wordsArr, wordTable));
 
 
 let wordsArr = [...words];
 let learnedWords = [];
 let learnedWordsFromLocal = localStorageWork.getRecord();
 let randomWord;
+let card;
 
 if (learnedWordsFromLocal) {
 	learnedWords = [...learnedWordsFromLocal];
 	let engLearnedWords = learnedWords.map(e => e.eng);
-	console.log('массив изученных слов', engLearnedWords);
+	// console.log('массив изученных слов', engLearnedWords);
 	wordsArr = wordsArr.filter(e => {
 		if (!engLearnedWords.includes(e.eng)) {
 			return e
 		};
 	})
-	console.log('длинна массива со словами для изучения', wordsArr.length)
+	// console.log('длинна массива со словами для изучения', wordsArr.length)
 
 }
 
-let card;
 
 function getCard(data) {
 
@@ -76,10 +80,17 @@ function goOut() {
 
 function getRndCard() {
 	const min = 0;
-	let max = wordsArr.length - 1;
-
+	let max = wordsArr.length;
 	let rndWordIndex = getRandomInt(min, max);
-	randomWord = wordsArr[rndWordIndex];
+	// Что бы проверит работостособность функции получения рандомного слова и выученных слов. 
+	// Надо поставить max = 1; и в if (rndWordIndex == wordsArr.length) заменить wordsArr.lenth на 1
+	if (rndWordIndex == wordsArr.length) {
+		
+		getWordFromLearnedWord(); // функция получения рандомного слова из выученных слов
+		
+	} else {
+		randomWord = wordsArr[rndWordIndex];
+	}
 	learnedWords.push(randomWord);
 	getCard(randomWord)
 
@@ -92,7 +103,6 @@ function reserLearningWorld() {
 	iDontKnowFunc('reset')
 }
 
-getRndCard()
 
 function deleteOldCard() {
 	let cardBlockElementLength = [...cardBlock.children].length;
@@ -104,3 +114,19 @@ function deleteOldCard() {
 		})
 	}
 }
+
+function getWordFromLearnedWord() {
+	
+	if (learnedWords.length > 0 ) {
+		let rndWordIndex = getRandomInt(0, learnedWords.length - 1);
+		randomWord = learnedWords[rndWordIndex];
+		learnedWords.splice(learnedWords.indexOf(randomWord), 1);
+		localStorageWork.setRecord(learnedWords)
+	} else {
+		getRndCard()
+	}
+}
+
+
+
+getRndCard()
