@@ -6,6 +6,6 @@ function getWidth() {
     const windowInnerWidth = document.documentElement.clientWidth;
     + windowInnerWidth < 1024
         ? cardBlock.style.width = windowInnerWidth + 'px'
-        : cardBlock.style.width = '1024px'
+        : cardBlock.style.width = '1024px';
 }
-getWidth()
+getWidth();

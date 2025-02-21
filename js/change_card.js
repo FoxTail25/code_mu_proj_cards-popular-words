@@ -19,21 +19,21 @@ document.getElementById('all_result').addEventListener('click', () => {
 	tableBtn(wordsArr, wordTable);
 })
 document.getElementById('learned_result').addEventListener('click', () => {
-	resultTableLearnengFlag = 'learned'
+	resultTableLearnengFlag = 'learned';
 	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
 })
 document.getElementById('remains_to_be_learned').addEventListener('click', () => {
-	resultTableLearnengFlag = "not_learned"
+	resultTableLearnengFlag = "not_learned";
 	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
 })
 
 
 document.getElementById('wordTableBtn').addEventListener('click', (event) => {
 	if ([...tableBlock.classList].includes('hide')) {
-		tableBlock.classList.remove('hide')
+		tableBlock.classList.remove('hide');
 		event.target.textContent = 'Скрыть результат';
 	} else {
-		tableBlock.classList.add('hide')
+		tableBlock.classList.add('hide');
 		event.target.textContent = 'Посмотреть результат';
 	}
 });
@@ -67,9 +67,9 @@ function getCard(data) {
 	card = createCard(data, iKnowFunc, iDontKnowFunc);
 	cardBlock.appendChild(card);
 	setTimeout(() => {
-		card.classList.remove('bern')
+		card.classList.remove('bern');
 		// console.log('длинна блока с карточками', [...cardBlock.children].length);
-		deleteOldCard()
+		deleteOldCard();
 	}
 		, 1
 	)
@@ -77,37 +77,37 @@ function getCard(data) {
 
 function iKnowFunc() {
 	// console.log('длинна массива слов для изучения', wordsArr.length)
-	localStorageWork.setRecord(learnedWords)
+	localStorageWork.setRecord(learnedWords);
 	let indexRandomWord = wordsArr.indexOf(randomWord);
-	wordsArr.splice(indexRandomWord, 1)
+	wordsArr.splice(indexRandomWord, 1);
 	// console.log('длинна массива слов для изучения', wordsArr.length)
 
-	goOut()
-	getRndCard()
+	goOut();
+	getRndCard();
 }
 function iDontKnowFunc(reset) {
 
 	if (reset == 'reset') {
 		// learnedWords.pop()
-		goOut()
-		getRndCard()
+		goOut();
+		getRndCard();
 	} else {
 
 		learnedWords.pop()
 		let [, rus] = [...card.children];
-		rus.classList.remove('hide')
+		rus.classList.remove('hide');
 		setTimeout(
 			() => {
-				goOut()
-				getRndCard()
+				goOut();
+				getRndCard();
 			}, 1000 // вреимя задержки смены карточки при показе перевода слова.
-		)
+		);
 	}
 
 }
 
 function goOut() {
-	card.classList.add('go_out')
+	card.classList.add('go_out');
 }
 
 
@@ -125,7 +125,7 @@ function getRndCard() {
 		randomWord = wordsArr[rndWordIndex];
 	}
 	learnedWords.push(randomWord);
-	getCard(randomWord)
+	getCard(randomWord);
 
 	changeTableData()
 }
@@ -134,8 +134,8 @@ function reserLearningWorld() {
 	wordsArr = [...words];
 	learnedWords = [];
 	localStorageWork.setRecord(learnedWords);
-	iDontKnowFunc('reset')
-	tableBtn(wordsArr, wordTable, resultTableLearnengFlag)
+	iDontKnowFunc('reset');
+	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
 }
 
 
@@ -144,7 +144,7 @@ function deleteOldCard() {
 	if (cardBlockElementLength > 2) {
 		[...cardBlock.children].forEach((e, i) => {
 			if (i != cardBlockElementLength - 2 && i != cardBlockElementLength - 1) {
-				cardBlock.removeChild(e)
+				cardBlock.removeChild(e);
 			}
 		})
 	}
@@ -156,20 +156,20 @@ function getWordFromLearnedWord() {
 		let rndWordIndex = getRandomInt(0, learnedWords.length - 1);
 		randomWord = learnedWords[rndWordIndex];
 		learnedWords.splice(learnedWords.indexOf(randomWord), 1);
-		localStorageWork.setRecord(learnedWords)
+		localStorageWork.setRecord(learnedWords);
 	} else {
-		getRndCard()
+		getRndCard();
 	}
 }
 
 function changeTableData() {
 
-	tableBtn(wordsArr, wordTable, resultTableLearnengFlag)
+	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
 }
 
 
-getRndCard()
+getRndCard();
 
-tableBtn(wordsArr, wordTable, resultTableLearnengFlag)
+tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
 
 

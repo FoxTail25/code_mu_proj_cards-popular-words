@@ -30,4 +30,4 @@ class localStor {
 	}
 }
 
-export const localStorageWork = new localStor('learnedWords')
+export const localStorageWork = new localStor('learnedWords');

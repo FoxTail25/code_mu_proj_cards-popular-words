@@ -1,14 +1,14 @@
 
 
 import { localStorageWork } from './local_stor.js';
-const learned = document.getElementById('learned')
+const learned = document.getElementById('learned');
 const leftToLearn = document.getElementById('left_to_learn');
 
 export function tableBtn(wordsArr, wordTable, flag = false) {
-	let learnedWord = localStorageWork.getRecord()
+	let learnedWord = localStorageWork.getRecord();
 
 
-	createResultTable(learnedWord, wordsArr, wordTable, flag)
+	createResultTable(learnedWord, wordsArr, wordTable, flag);
 }
 
 function createResultTable(learnedWord, wordsArr, word_table, flag) {
@@ -34,7 +34,7 @@ function createResultTable(learnedWord, wordsArr, word_table, flag) {
 		document.getElementById('learned').style.display = '';
 	}
 
-	addResultQuantityInTable(learningWordQuantity, wordsArrQuantity, flag)
+	addResultQuantityInTable(learningWordQuantity, wordsArrQuantity, flag);
 
 	for (let i = 0; i < TableRowQuantity - 1; i++) {
 		let tr = document.createElement('tr');
@@ -48,8 +48,8 @@ function createResultTable(learnedWord, wordsArr, word_table, flag) {
 				tr.appendChild(getTd(learnedWord[i]?.eng, 'green'));
 				tr.appendChild(getTd(learnedWord[i]?.rus, 'green'));
 			} else {
-				tr.appendChild(getTd())
-				tr.appendChild(getTd())
+				tr.appendChild(getTd());
+				tr.appendChild(getTd());
 			}
 		}
 		if (flag == false || flag == 'not_learned') {
@@ -59,24 +59,24 @@ function createResultTable(learnedWord, wordsArr, word_table, flag) {
 				tr.appendChild(getTd(wordsArr[i]?.rus));
 
 			} else {
-				tr.appendChild(getTd())
-				tr.appendChild(getTd())
+				tr.appendChild(getTd());
+				tr.appendChild(getTd());
 			}
 		}
 
-		tbody.appendChild(tr)
+		tbody.appendChild(tr);
 	}
 	if (word_table.children[1]) {
-		word_table.removeChild(word_table.children[1])
+		word_table.removeChild(word_table.children[1]);
 	}
-	word_table.appendChild(tbody)
+	word_table.appendChild(tbody);
 }
 
 function getTd(data = 'undefine', color = 'red') {
-	let td = document.createElement('td')
+	let td = document.createElement('td');
 	if (data != 'undefine') {
-		td.textContent = data
-		td.classList.add(color)
+		td.textContent = data;
+		td.classList.add(color);
 	}
 	return td
 }
