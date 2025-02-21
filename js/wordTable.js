@@ -1,14 +1,15 @@
 // const wordTable = document.getElementById("word_table");
 // document.getElementById('wordTableBtn').addEventListener('click', tableBtn);
 
-import { localStorageWork } from './local_stor.js'
-
+import { localStorageWork } from './local_stor.js';
+const learned = document.getElementById('learned')
+const leftToLearn = document.getElementById('left_to_learn');
 
 export function tableBtn(wordsArr, wordTable) {
 	let learnedWord = localStorageWork.getRecord()
-	console.log(learnedWord.length)
-	console.log(wordsArr.length)
-	console.log(wordTable)
+	// console.log(learnedWord.length)
+	// console.log(wordsArr.length)
+	// console.log(wordTable)
 
 	createResultTable(learnedWord, wordsArr, wordTable)
 }
@@ -16,11 +17,18 @@ export function tableBtn(wordsArr, wordTable) {
 function createResultTable(learnedWord, wordsArr, word_table) {
 	let tbody = document.createElement('tbody');
 
+	let learningWordQuantity = learnedWord.length;
+	let wordsArrQuantity = wordsArr.length;
+
+	console.log('lwq',learningWordQuantity)
+
 	let TableRowQuantity =
-		learnedWord.length > wordsArr.length
-			? learnedWord.length
-			: wordsArr.length;
-	console.log(TableRowQuantity);
+	learningWordQuantity > wordsArrQuantity
+			? learningWordQuantity
+			: wordsArrQuantity;
+	console.log('tr' ,TableRowQuantity);
+
+	addResultQuantityInTable(learningWordQuantity, wordsArrQuantity)
 
 	for(let i = 0; i < TableRowQuantity-1; i++) {
 		let tr = document.createElement('tr');
@@ -41,4 +49,10 @@ function getTd(data) {
 		td.textContent = data
 	} 
 	return td
+}
+
+
+function addResultQuantityInTable(learnedQ, leftToLearnQ) {
+learned.textContent = `Выучено ${learnedQ}`;
+leftToLearn.textContent = `Осталось выучить ${leftToLearnQ}`;
 }
