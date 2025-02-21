@@ -8,7 +8,17 @@ const cardBlock = document.querySelector('.card_block');
 document.getElementById('clearLearningWorldBtn').addEventListener('click', reserLearningWorld);
 
 const wordTable = document.getElementById("word_table");
-document.getElementById('wordTableBtn').addEventListener('click', () => tableBtn(wordsArr, wordTable));
+document.getElementById('wordTableBtn').addEventListener('click', (event) => {
+	console.log(wordTable.style.display == 'none')
+	if(wordTable.style.display == 'none') {
+		wordTable.style.display = 'table'
+		event.target.textContent =  'Скрыть результат';
+	} else {
+		wordTable.style.display = 'none'
+		event.target.textContent =  'Посмотреть результат';
+	}
+});
+
 
 
 let wordsArr = [...words];
@@ -16,6 +26,8 @@ let learnedWords = [];
 let learnedWordsFromLocal = localStorageWork.getRecord();
 let randomWord;
 let card;
+
+
 
 if (learnedWordsFromLocal) {
 	learnedWords = [...learnedWordsFromLocal];
@@ -47,9 +59,10 @@ function getCard(data) {
 function iKnowFunc() {
 	// console.log('длинна массива слов для изучения', wordsArr.length)
 	localStorageWork.setRecord(learnedWords)
-	let indexxRandomWord = wordsArr.indexOf(randomWord);
-	wordsArr.splice(indexxRandomWord, 1)
+	let indexRandomWord = wordsArr.indexOf(randomWord);
+	wordsArr.splice(indexRandomWord, 1)
 	// console.log('длинна массива слов для изучения', wordsArr.length)
+	
 	goOut()
 	getRndCard()
 }
@@ -94,6 +107,7 @@ function getRndCard() {
 	learnedWords.push(randomWord);
 	getCard(randomWord)
 
+	changeTableData()
 }
 
 function reserLearningWorld() {
@@ -101,6 +115,7 @@ function reserLearningWorld() {
 	learnedWords = [];
 	localStorageWork.setRecord(learnedWords);
 	iDontKnowFunc('reset')
+	tableBtn(wordsArr, wordTable)
 }
 
 
@@ -127,6 +142,14 @@ function getWordFromLearnedWord() {
 	}
 }
 
+function changeTableData() {
+	
+	tableBtn(wordsArr, wordTable)
+}
 
 
 getRndCard()
+
+tableBtn(wordsArr, wordTable)
+
+
