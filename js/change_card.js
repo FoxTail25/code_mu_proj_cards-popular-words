@@ -8,14 +8,33 @@ const cardBlock = document.querySelector('.card_block');
 document.getElementById('clearLearningWorldBtn').addEventListener('click', reserLearningWorld);
 
 const wordTable = document.getElementById("word_table");
+const tableBlock = document.querySelector('.table_block');
+
+
+
+let resultTableLearnengFlag = false;
+// кнопки фильтрации результатов таблицы
+document.getElementById('all_result').addEventListener('click', () => {
+	resultTableLearnengFlag = false;
+	tableBtn(wordsArr, wordTable);
+})
+document.getElementById('learned_result').addEventListener('click', () => {
+	resultTableLearnengFlag = 'learned'
+	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
+})
+document.getElementById('remains_to_be_learned').addEventListener('click', () => {
+	resultTableLearnengFlag = "not_learned"
+	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
+})
+
+
 document.getElementById('wordTableBtn').addEventListener('click', (event) => {
-	console.log(wordTable.style.display == 'none')
-	if(wordTable.style.display == 'none') {
-		wordTable.style.display = 'table'
-		event.target.textContent =  'Скрыть результат';
+	if ([...tableBlock.classList].includes('hide')) {
+		tableBlock.classList.remove('hide')
+		event.target.textContent = 'Скрыть результат';
 	} else {
-		wordTable.style.display = 'none'
-		event.target.textContent =  'Посмотреть результат';
+		tableBlock.classList.add('hide')
+		event.target.textContent = 'Посмотреть результат';
 	}
 });
 
@@ -62,11 +81,12 @@ function iKnowFunc() {
 	let indexRandomWord = wordsArr.indexOf(randomWord);
 	wordsArr.splice(indexRandomWord, 1)
 	// console.log('длинна массива слов для изучения', wordsArr.length)
-	
+
 	goOut()
 	getRndCard()
 }
 function iDontKnowFunc(reset) {
+
 	if (reset == 'reset') {
 		// learnedWords.pop()
 		goOut()
@@ -98,9 +118,9 @@ function getRndCard() {
 	// Что бы проверит работостособность функции получения рандомного слова и выученных слов. 
 	// Надо поставить max = 1; и в if (rndWordIndex == wordsArr.length) заменить wordsArr.lenth на 1
 	if (rndWordIndex == wordsArr.length) {
-		
+
 		getWordFromLearnedWord(); // функция получения рандомного слова из выученных слов
-		
+
 	} else {
 		randomWord = wordsArr[rndWordIndex];
 	}
@@ -115,7 +135,7 @@ function reserLearningWorld() {
 	learnedWords = [];
 	localStorageWork.setRecord(learnedWords);
 	iDontKnowFunc('reset')
-	tableBtn(wordsArr, wordTable)
+	tableBtn(wordsArr, wordTable, resultTableLearnengFlag)
 }
 
 
@@ -131,8 +151,8 @@ function deleteOldCard() {
 }
 
 function getWordFromLearnedWord() {
-	
-	if (learnedWords.length > 0 ) {
+
+	if (learnedWords.length > 0) {
 		let rndWordIndex = getRandomInt(0, learnedWords.length - 1);
 		randomWord = learnedWords[rndWordIndex];
 		learnedWords.splice(learnedWords.indexOf(randomWord), 1);
@@ -143,13 +163,13 @@ function getWordFromLearnedWord() {
 }
 
 function changeTableData() {
-	
-	tableBtn(wordsArr, wordTable)
+
+	tableBtn(wordsArr, wordTable, resultTableLearnengFlag)
 }
 
 
 getRndCard()
 
-tableBtn(wordsArr, wordTable)
+tableBtn(wordsArr, wordTable, resultTableLearnengFlag)
 
 

@@ -45,27 +45,4 @@
   }
 }
 
-/* #entertaiment_box {
-  margin-top: 20px;
-  display: flex;
-  
-  justify-content: center;
-  flex-wrap: wrap;
-  gap:10px;
 
-  .box {
-    width: 300px;
-	opacity: 1;
-	position: static;
-	transition: opacity .1s, height .2s, position .3s;
-	overflow: hidden;
-    img {
-      width: 100%;
-    }
-  }
-  .hide {
-	position: absolute;
-	opacity: 0;
-	height: 0;
-  }
-} */

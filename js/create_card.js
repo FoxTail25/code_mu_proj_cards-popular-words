@@ -10,7 +10,9 @@ export function createCard(data, knowFunc, dontknowFunc) {
 	eng.textContent = data.eng;
 	rus.textContent = data.rus;
 	knowBtn.addEventListener('click', knowFunc)
-	dontKnowbtn.addEventListener('click', dontknowFunc)
+	dontKnowbtn.addEventListener('click', (e)=> {
+		dontknowFunc()
+	})
 	newWordCard.classList.add('bern')
 	return newWordCard
 }

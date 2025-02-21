@@ -3,18 +3,25 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="description" content="Карточки 1000 англ слов" />
+	<meta name="description" content="Карточки 1000 английских слов" />
 	<link rel="stylesheet" href="./css/index.css" />
 	<link rel="icon" href="./favicon.ico">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Карточки 1000 англ слов</title>
+
+	<!-- Подключение шрифтов -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+	<!--  -->
+
+	<title>Карточки 1000 английских слов</title>
 </head>
 
 <body>
 	<div class="container">
 
 		<header>
-			<h1>Карточки 1000 англ слов</h1>
+			<h1>Карточки 1000 английских слов</h1>
 		</header>
 	</div>
 	<main>
@@ -37,17 +44,35 @@
 			<div class="btn_box">
 				<button class="btn" id="wordTableBtn">Посмотреть результат</button>
 			</div>
-			<table id="word_table" style="display: none;">
-				<thead>
-					<tr>
-						<th colspan="2" id="learned">Выученные слова</th>
-						<th colspan="2" id="left_to_learn">Осталось выучить</th>
-					</tr>
-				</thead>
-				<tbody>
-					
-				</tbody>
-			</table>
+			<div class="table_block hide">
+				
+				<div class="btn_box">
+					<button class="btn" id="all_result">
+						 Все
+					</button>
+				</div>
+				<div class="btn_box">
+					<button class="btn"  id="learned_result">
+						 Выучено
+					</button>
+				</div>
+				<div class="btn_box">
+					<button class="btn"  id="remains_to_be_learned">
+						 Осталось
+					</button>
+				</div>
+				<table id="word_table">
+					<thead>
+						<tr>
+							<th colspan="2" id="learned">Выученные слова</th>
+							<th colspan="2" id="left_to_learn">Осталось выучить</th>
+						</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+				</table>
+			</div>
 		</div>
 
 	</main>
@@ -66,7 +91,6 @@
 	</footer>
 	<script src="./js/change_card.js" type="module"></script>
 	<script src="./js/relat_width.js"></script>
-	<script src="./js/wordTable.js" type="module"></script>
 </body>
 
 </html>

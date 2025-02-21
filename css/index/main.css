@@ -5,21 +5,20 @@ main {
   .card_block {
     position: relative;
     width: 60vw;
-    height: 50vh;
+    height: 300px;
     overflow: hidden;
-    
 
     .word_cart {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: 70px 70px auto;
+      grid-template-rows: 70px 140px auto;
       border: 1px solid gray;
       border-radius: 15px;
       position: absolute;
       left: 50%;
       transform: translate(-50%, 0);
 
-      transition: left .5s ease;
+      transition: left 0.5s ease;
 
       width: 300px;
       padding-bottom: 20px;
@@ -36,7 +35,8 @@ main {
         text-align: center;
         font-size: 40px;
         box-sizing: border-box;
-        transition: .5s;
+        transition: 0.5s;
+        align-self: center;
       }
 
       .hide {
@@ -60,20 +60,47 @@ main {
       right: 0vw;
     }
   }
-  #word_table {
-    width: 100%;
-    thead {
-      th {
-        /* text-align: left; */
-      }
-    }
-    tbody {
-      tr {
-        td {
+  
+}
+
+.table_block {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    #word_table {
+      grid-column: 1 /4;
+      width: 100%;
+      /* box-sizing:border-box; */
+      border-collapse: collapse;
+
+      font-family: "Oswald", serif;
+      font-optical-sizing: auto;
+      font-weight: 300;
+      font-style: normal;
+
+      thead {
+        th {
+          /* text-align: left; */
           width: 25%;
-          text-align: center;
+        }
+      }
+      tbody {
+        tr {
+          td {
+            text-align: center;
+            overflow: hidden;
+            font-size: 12px;
+          }
+          .green {
+            border-bottom: 1px solid green;
+          }
+          .red {
+            border-bottom: 1px solid red;
+          }
         }
       }
     }
   }
+.hide {
+  display: none!important;
 }
