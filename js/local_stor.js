@@ -1,33 +1,42 @@
-
-class localStor {
+class LocalStor {
 	constructor(name) {
 		this.name = name;
 	}
+
+	/**
+	 * Сохраняет данные в localStorage, переводя их в строку
+	 * @param {any} data - Данные для сохранения (массив, объект и т.д.)
+	 */
 	setRecord(data) {
-		localStorage.setItem(this.name, this._getString(data));
-	}
-	getRecord() {
-		return this._checkRecord(this.name)
-			? this._getParse(localStorage.getItem(this.name))
-			: false;
+		try {
+			localStorage.setItem(this.name, JSON.stringify(data));
+		} catch (error) {
+			console.error("Ошибка записи в localStorage:", error);
+		}
 	}
 
-	_checkRecord(name) {
-		let answer;
-		try {
-			localStorage.getItem(name);
-			answer = true;
-		} catch {
-			answer = false;
+	/**
+	 * Получает данные из localStorage и парсит их.
+	 * Если данных нет или JSON поврежден — возвращает false.
+	 * @returns {any|boolean} - Распарсенные данные или false
+	 */
+	getRecord() {
+		const record = localStorage.getItem(this.name);
+		
+		// Если записи вообще нет (getItem вернул null), сразу возвращаем false
+		if (record === null) {
+			return false;
 		}
-		return answer
-	}
-	_getString(data) {
-		return JSON.stringify(data);
-	}
-	_getParse(data) {
-		return JSON.parse(data);
+
+		// Защищаем парсинг строки. Если внутри лежит "битый" JSON, приложение не упадет
+		try {
+			return JSON.parse(record);
+		} catch (error) {
+			console.error("Ошибка чтения/парсинга данных из localStorage:", error);
+			return false;
+		}
 	}
 }
 
-export const localStorageWork = new localStor('learnedWords');
+// Экспортируем готовый инстанс 
+export const localStorageWork = new LocalStor('learnedWords');

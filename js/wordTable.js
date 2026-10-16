@@ -1,67 +1,66 @@
-
-
 import { localStorageWork } from './local_stor.js';
+
+// Кешируем DOM-элементы на самом верху (выполняется один раз при загрузке модуля)
 const learned = document.getElementById('learned');
 const leftToLearn = document.getElementById('left_to_learn');
 
 export function tableBtn(wordsArr, wordTable, flag = false) {
 	let learnedWord = localStorageWork.getRecord();
 
-	if(!learnedWord) {
-		learnedWord = []; // Если таблицы не сужествует то выученныеСлова = пустому массиву 
+	if (!learnedWord) {
+		learnedWord = []; // Если записи в локальном хранилище нет, используем пустой массив
 	}
 
 	createResultTable(learnedWord, wordsArr, wordTable, flag);
 }
 
 function createResultTable(learnedWord, wordsArr, word_table, flag) {
-	let tbody = document.createElement('tbody');
+	const tbody = document.createElement('tbody');
 
-	let learningWordQuantity = learnedWord.length;
-	let wordsArrQuantity = wordsArr.length;
+	const learningWordQuantity = learnedWord.length;
+	const wordsArrQuantity = wordsArr.length;
 
+	// Управляем видимостью заголовков в зависимости от фильтра
+	leftToLearn.style.display = flag === 'learned' ? 'none' : '';
+	learned.style.display = flag === 'not_learned' ? 'none' : '';
 
-	let TableRowQuantity =
-		learningWordQuantity > wordsArrQuantity
-			? learningWordQuantity
-			: wordsArrQuantity;
-	if (flag == 'learned') {
+	// Обновляем счетчики количества слов
+	addResultQuantityInTable(learningWordQuantity, wordsArrQuantity);
 
-		document.getElementById('left_to_learn').style.display = 'none';
-		document.getElementById('learned').style.display = '';
-	} else if (flag == 'not_learned') {
-		document.getElementById('learned').style.display = 'none';
-		document.getElementById('left_to_learn').style.display = '';
+	// Определяем, по какому массиву будем строить строки таблицы
+	let renderArr = [];
+	if (flag === 'learned') {
+		renderArr = learnedWord;
+	} else if (flag === 'not_learned') {
+		renderArr = wordsArr;
 	} else {
-		document.getElementById('left_to_learn').style.display = '';
-		document.getElementById('learned').style.display = '';
+		// В режиме "Все" берем длину самого длинного массива, чтобы показать максимум данных
+		const maxLength = Math.max(learningWordQuantity, wordsArrQuantity);
+		renderArr = new Array(maxLength).fill(null);
 	}
 
-	addResultQuantityInTable(learningWordQuantity, wordsArrQuantity, flag);
+	// Строим строки таблицы (исправлен баг с i < length - 1, теперь выводятся абсолютно все слова)
+	for (let i = 0; i < renderArr.length; i++) {
+		const tr = document.createElement('tr');
 
-	for (let i = 0; i < TableRowQuantity - 1; i++) {
-		let tr = document.createElement('tr');
-
-		
-
-
-		if (flag == false || flag == 'learned') {
-
+		// Рендерим колонку выученных слов (если выбран режим "Все" или "Выучено")
+		if (flag === false || flag === 'learned') {
 			if (learnedWord[i]) {
-				tr.appendChild(getTd(learnedWord[i]?.eng, 'green'));
-				tr.appendChild(getTd(learnedWord[i]?.rus, 'green'));
-			} else {
+				tr.appendChild(getTd(learnedWord[i].eng, 'green'));
+				tr.appendChild(getTd(learnedWord[i].rus, 'green'));
+			} else if (flag === false) {
+				// В режиме "Все" добавляем пустые ячейки для сохранения структуры сетки, если слова кончились
 				tr.appendChild(getTd());
 				tr.appendChild(getTd());
 			}
 		}
-		if (flag == false || flag == 'not_learned') {
 
+		// Рендерим колонку оставшихся слов (если выбран режим "Все" или "not_learned")
+		if (flag === false || flag === 'not_learned') {
 			if (wordsArr[i]) {
-				tr.appendChild(getTd(wordsArr[i]?.eng));
-				tr.appendChild(getTd(wordsArr[i]?.rus));
-
-			} else {
+				tr.appendChild(getTd(wordsArr[i].eng));
+				tr.appendChild(getTd(wordsArr[i].rus));
+			} else if (flag === false) {
 				tr.appendChild(getTd());
 				tr.appendChild(getTd());
 			}
@@ -69,21 +68,25 @@ function createResultTable(learnedWord, wordsArr, word_table, flag) {
 
 		tbody.appendChild(tr);
 	}
-	if (word_table.children[1]) {
-		word_table.removeChild(word_table.children[1]);
+
+	// Безопасное удаление старого tbody через селектор, не привязанное к индексам children
+	const oldTbody = word_table.querySelector('tbody');
+	if (oldTbody) {
+		oldTbody.remove();
 	}
+	
 	word_table.appendChild(tbody);
 }
 
-function getTd(data = 'undefine', color = 'red') {
-	let td = document.createElement('td');
-	if (data != 'undefine') {
+// Избавление от дефолтной строки 'undefine' в пользу чистого null
+function getTd(data = null, color = 'red') {
+	const td = document.createElement('td');
+	if (data !== null) {
 		td.textContent = data;
 		td.classList.add(color);
 	}
-	return td
+	return td;
 }
-
 
 function addResultQuantityInTable(learnedQ, leftToLearnQ) {
 	learned.textContent = `Выучено ${learnedQ}`;

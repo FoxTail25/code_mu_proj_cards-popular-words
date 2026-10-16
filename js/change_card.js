@@ -4,172 +4,170 @@ import { getRandomInt } from './rnd_num.js';
 import { words } from './words.js';
 import { tableBtn } from './wordTable.js';
 
-const cardBlock = document.querySelector('.card_block');
-document.getElementById('clearLearningWorldBtn').addEventListener('click', reserLearningWorld);
 
+// DOM Элементы
+const cardBlock = document.querySelector('.card_block');
 const wordTable = document.getElementById("word_table");
 const tableBlock = document.querySelector('.table_block');
 
+document.getElementById('clearLearningWorldBtn').addEventListener('click', resetLearningWords);
 
+// Флаг фильтрации таблицы результатов
+let resultTableLearningFlag = false;
 
-let resultTableLearnengFlag = false;
-// кнопки фильтрации результатов таблицы
+// Кнопки фильтрации результатов таблицы
 document.getElementById('all_result').addEventListener('click', () => {
-	resultTableLearnengFlag = false;
+	resultTableLearningFlag = false;
 	tableBtn(wordsArr, wordTable);
-})
+});
 document.getElementById('learned_result').addEventListener('click', () => {
-	resultTableLearnengFlag = 'learned';
-	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
-})
+	resultTableLearningFlag = 'learned';
+	tableBtn(wordsArr, wordTable, resultTableLearningFlag);
+});
 document.getElementById('remains_to_be_learned').addEventListener('click', () => {
-	resultTableLearnengFlag = "not_learned";
-	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
-})
-
-
-document.getElementById('wordTableBtn').addEventListener('click', (event) => {
-	if ([...tableBlock.classList].includes('hide')) {
-		tableBlock.classList.remove('hide');
-		event.target.textContent = 'Скрыть результат';
-	} else {
-		tableBlock.classList.add('hide');
-		event.target.textContent = 'Посмотреть результат';
-	}
+	resultTableLearningFlag = "not_learned";
+	tableBtn(wordsArr, wordTable, resultTableLearningFlag);
 });
 
+// Показ / Скрытие таблицы
+document.getElementById('wordTableBtn').addEventListener('click', (event) => {
+	const isHidden = tableBlock.classList.contains('hide');
+	tableBlock.classList.toggle('hide');
+	event.target.textContent = isHidden ? 'Скрыть результат' : 'Посмотреть результат';
+});
 
-
+// Инициализация состояния данных
 let wordsArr = [...words];
 let learnedWords = [];
-let learnedWordsFromLocal = localStorageWork.getRecord();
+const learnedWordsFromLocal = localStorageWork.getRecord();
 let randomWord;
 let card;
 
-
-
 if (learnedWordsFromLocal) {
 	learnedWords = [...learnedWordsFromLocal];
-	let engLearnedWords = learnedWords.map(e => e.eng);
-	// console.log('массив изученных слов', engLearnedWords);
-	wordsArr = wordsArr.filter(e => {
-		if (!engLearnedWords.includes(e.eng)) {
-			return e
-		};
-	})
-	// console.log('длинна массива со словами для изучения', wordsArr.length)
-
+	// Используем Set для мгновенного поиска O(1) вместо замедляющего .includes()
+	const engLearnedWordsSet = new Set(learnedWords.map(e => e.eng));
+	wordsArr = wordsArr.filter(item => !engLearnedWordsSet.has(item.eng));
 }
 
-
 function getCard(data) {
-
 	card = createCard(data, iKnowFunc, iDontKnowFunc);
 	cardBlock.appendChild(card);
+	
+	// Минимальный таймаут для запуска CSS-анимации
 	setTimeout(() => {
 		card.classList.remove('bern');
-		// console.log('длинна блока с карточками', [...cardBlock.children].length);
 		deleteOldCard();
-	}
-		, 1
-	)
+	}, 1);
 }
 
 function iKnowFunc() {
-	// console.log('длинна массива слов для изучения', wordsArr.length)
 	localStorageWork.setRecord(learnedWords);
-	let indexRandomWord = wordsArr.indexOf(randomWord);
-	wordsArr.splice(indexRandomWord, 1);
-	// console.log('длинна массива слов для изучения', wordsArr.length)
+	
+	const indexRandomWord = wordsArr.indexOf(randomWord);
+	if (indexRandomWord !== -1) {
+		wordsArr.splice(indexRandomWord, 1);
+	}
 
 	goOut();
 	getRndCard();
 }
-function iDontKnowFunc(reset) {
 
-	if (reset == 'reset') {
-		// learnedWords.pop()
+function iDontKnowFunc(reset) {
+	// Безопасное удаление конкретного слова вместо непредсказуемого .pop()
+	const wordIndex = learnedWords.indexOf(randomWord);
+	if (wordIndex !== -1) {
+		learnedWords.splice(wordIndex, 1);
+	}
+
+	if (reset === 'reset') {
 		goOut();
 		getRndCard();
 	} else {
-
-		learnedWords.pop()
-		let [, rus] = [...card.children];
+		const [, rus] = card.children; // Деструктурируем напрямую без спреда
 		rus.classList.remove('hide');
-		setTimeout(
-			() => {
-				goOut();
-				getRndCard();
-			}, 1000 // вреимя задержки смены карточки при показе перевода слова.
-		);
+		
+		setTimeout(() => {
+			goOut();
+			getRndCard();
+		}, 1000); // Время задержки перед показом перевода
 	}
-
 }
 
 function goOut() {
 	card.classList.add('go_out');
 }
 
-
 function getRndCard() {
+	// Проверка на случай, если абсолютно все слова выучены
+	if (wordsArr.length === 0 && learnedWords.length === 0) {
+		alert("Поздравляем! Вы выучили все слова!");
+		return;
+	}
+
 	const min = 0;
-	let max = wordsArr.length;
-	let rndWordIndex = getRandomInt(min, max);
-	// Что бы проверит работостособность функции получения рандомного слова и выученных слов. 
-	// Надо поставить max = 1; и в if (rndWordIndex == wordsArr.length) заменить wordsArr.lenth на 1
-	if (rndWordIndex == wordsArr.length) {
+	const max = wordsArr.length + 1;
+	const rndWordIndex = getRandomInt(min, max);
 
-		getWordFromLearnedWord(); // функция получения рандомного слова из выученных слов
-
+	if (rndWordIndex === wordsArr.length) {
+		getWordFromLearnedWord(); 
 	} else {
 		randomWord = wordsArr[rndWordIndex];
 	}
-	learnedWords.push(randomWord);
-	getCard(randomWord);
-
-	changeTableData()
+	
+	if (randomWord) {
+		learnedWords.push(randomWord);
+		getCard(randomWord);
+		changeTableData();
+	}
 }
 
-function reserLearningWorld() {
+function resetLearningWords() {
 	wordsArr = [...words];
 	learnedWords = [];
 	localStorageWork.setRecord(learnedWords);
 	iDontKnowFunc('reset');
-	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
+	tableBtn(wordsArr, wordTable, resultTableLearningFlag);
 }
 
-
 function deleteOldCard() {
-	let cardBlockElementLength = [...cardBlock.children].length;
+	const currentCards = cardBlock.children;
+	const cardBlockElementLength = currentCards.length;
+	
 	if (cardBlockElementLength > 2) {
-		[...cardBlock.children].forEach((e, i) => {
-			if (i != cardBlockElementLength - 2 && i != cardBlockElementLength - 1) {
-				cardBlock.removeChild(e);
-			}
-		})
+		// Удаляем старые карточки, оставляя только последние две (текущую и уходящую)
+		for (let i = cardBlockElementLength - 3; i >= 0; i--) {
+			cardBlock.removeChild(currentCards[i]);
+		}
 	}
 }
 
 function getWordFromLearnedWord() {
-
 	if (learnedWords.length > 0) {
-		let rndWordIndex = getRandomInt(0, learnedWords.length - 1);
+		const rndWordIndex = getRandomInt(0, learnedWords.length);
 		randomWord = learnedWords[rndWordIndex];
-		learnedWords.splice(learnedWords.indexOf(randomWord), 1);
+		
+		const wordIndex = learnedWords.indexOf(randomWord);
+		if (wordIndex !== -1) {
+			learnedWords.splice(wordIndex, 1);
+		}
 		localStorageWork.setRecord(learnedWords);
 	} else {
-		getRndCard();
+		// Безопасный вызов без бесконечного цикла, если wordsArr еще не пуст
+		if (wordsArr.length > 0) {
+			const rndWordIndex = getRandomInt(0, wordsArr.length - 1);
+			randomWord = wordsArr[rndWordIndex];
+		}
 	}
 }
 
 function changeTableData() {
 
-	tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
+	tableBtn(wordsArr, wordTable, resultTableLearningFlag);
 }
 
-
+// Первоначальный запуск
 getRndCard();
-
-tableBtn(wordsArr, wordTable, resultTableLearnengFlag);
+tableBtn(wordsArr, wordTable, resultTableLearningFlag);
 
 

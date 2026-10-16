@@ -1,96 +1,113 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Интерактивные карточки для эффективного изучения 1000 самых популярных английских слов. Отслеживайте свой прогресс и учите язык легко."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Карточки 1000 английских слов — учите язык интерактивно"
+    />
+    <meta
+      property="og:description"
+      content="Удобный сервис для заучивания популярных английских слов. Пет-проект с LocalStorage, статистикой изученного и идеальной оптимизацией."
+    />
+    <meta property="og:url" content="https://foxtail25.github.io/code_mu_proj_cards-popular-words/" />
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="description" content="Карточки 1000 английских слов" />
-	<link rel="stylesheet" href="./css/index.css" />
-	<link rel="icon" href="./favicon.ico">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Ссылка на картинку-превью (лучше всего сделать скриншот сайта размером 1200x630px) -->
+    <meta
+      property="og:image"
+      content="./img/preview.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
-	<!-- Подключение шрифтов -->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
-	<!--  -->
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="icon" href="./favicon.ico" />
 
-	<title>Карточки 1000 английских слов</title>
-</head>
+    <title>Карточки 1000 английских слов</title>
+  </head>
 
-<body>
-	<div class="container">
-
-		<header>
-			<h1>Карточки 1000 английских слов</h1>
-		</header>
-	</div>
-	<main>
-		<div class="container">
-			<div class="card_block">
-				<div id="word_cart_sample" class="word_cart">
-					<span class="en_word"></span>
-					<span class="ru_word hide"></span>
-					<div class="btn_box">
-						<button id="i_know_btn" class="btn">знаю</button>
-					</div>
-					<div class="btn_box">
-						<button id="i_dont_know_btn" class="btn">не знаю</button>
-					</div>
-				</div>
-			</div>
-			<div class="btn_box">
-				<button class="btn" id="clearLearningWorldBtn">Очистить выученные слова</button>
-			</div>
-			<div class="btn_box">
-				<button class="btn" id="wordTableBtn">Посмотреть результат</button>
-			</div>
-			<div class="table_block hide">
-				
-				<div class="btn_box">
-					<button class="btn" id="all_result">
-						 Все
-					</button>
-				</div>
-				<div class="btn_box">
-					<button class="btn"  id="learned_result">
-						 Выучено
-					</button>
-				</div>
-				<div class="btn_box">
-					<button class="btn"  id="remains_to_be_learned">
-						 Осталось
-					</button>
-				</div>
-				<table id="word_table">
-					<thead>
-						<tr>
-							<th colspan="2" id="learned">Выученные слова</th>
-							<th colspan="2" id="left_to_learn">Осталось выучить</th>
-						</tr>
-					</thead>
-					<tbody>
-
-					</tbody>
-				</table>
-			</div>
-		</div>
-
-	</main>
-	<footer>
-		<div class="container">
-			<div class="footer">
-				<div class="copyright">©</div>
-				<div class="author">
-					<a href="https://github.com/FoxTail25" target="_blank" class="author_git"></a>
-					<span>FoxTail25</span>
-					<a href="https://t.me/Siverk" target="_blank" class="author_telegram"></a>
-				</div>
-				<div class="year">2025</div>
-			</div>
-		</div>
-	</footer>
-	<script src="./js/change_card.js" type="module"></script>
-	<script src="./js/relat_width.js"></script>
-</body>
-
+  <body>
+    <div class="container">
+      <header>
+        <h1>Карточки 1000 английских слов</h1>
+      </header>
+    </div>
+    <main>
+      <div class="container">
+        <div class="card_block">
+          <div id="word_cart_sample" class="word_cart">
+            <span class="en_word"></span>
+            <span class="ru_word hide"></span>
+            <div class="btn_box">
+              <button id="i_know_btn" class="btn">знаю</button>
+            </div>
+            <div class="btn_box">
+              <button id="i_dont_know_btn" class="btn">не знаю</button>
+            </div>
+          </div>
+        </div>
+        <div class="btn_box">
+          <button class="btn" id="clearLearningWorldBtn">
+            Очистить выученные слова
+          </button>
+        </div>
+        <div class="btn_box">
+          <button class="btn" id="wordTableBtn">Посмотреть результат</button>
+        </div>
+        <div class="table_block hide">
+          <div class="btn_box">
+            <button class="btn" id="all_result">Все</button>
+          </div>
+          <div class="btn_box">
+            <button class="btn" id="learned_result">Выучено</button>
+          </div>
+          <div class="btn_box">
+            <button class="btn" id="remains_to_be_learned">Осталось</button>
+          </div>
+          <table id="word_table">
+            <thead>
+              <tr>
+                <th colspan="2" id="learned">Выученные слова</th>
+                <th colspan="2" id="left_to_learn">Осталось выучить</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <div class="footer">
+          <div class="copyright">©</div>
+          <div class="author">
+            <a
+              href="https://github.com/FoxTail25"
+              target="_blank"
+              class="author_git"
+            >
+              <span class="visually-hidden">Профиль FoxTail25 на GitHub</span>
+            </a>
+            <span>FoxTail25</span>
+            <a
+              href="https://t.me/Siverk"
+              target="_blank"
+              class="author_telegram"
+            >
+              <span class="visually-hidden">Связаться с Siverk в Telegram</span>
+            </a>
+          </div>
+          <div class="year">2025</div>
+        </div>
+      </div>
+    </footer>
+    <script src="./js/change_card.js" type="module"></script>
+  </body>
 </html>
