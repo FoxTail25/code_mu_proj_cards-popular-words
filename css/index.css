@@ -215,14 +215,14 @@ footer {
 			width: 20px;
 			margin-left: 5px;
 			margin-right: 5px;
-			background: no-repeat url(../../img/ico/github-brands-solid.svg) center /contain;
+			background: no-repeat url(../img/ico/github-brands-solid.svg) center /contain;
 			transition: .2s;
 			&:hover {
 				transform: rotate(360deg);
 			}
 		}
 		.author_telegram {
-			background: no-repeat url(../../img/ico/telegram-brands-solid.svg) center /contain;
+			background: no-repeat url(../img/ico/telegram-brands-solid.svg) center /contain;
 		}
 	}
 	.year {
