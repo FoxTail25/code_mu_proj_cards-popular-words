@@ -7,6 +7,9 @@ const leftToLearn = document.getElementById('left_to_learn');
 export function tableBtn(wordsArr, wordTable, flag = false) {
 	let learnedWord = localStorageWork.getRecord();
 
+	if(!learnedWord) {
+		learnedWord = []; // Если таблицы не сужествует то выученныеСлова = пустому массиву 
+	}
 
 	createResultTable(learnedWord, wordsArr, wordTable, flag);
 }
